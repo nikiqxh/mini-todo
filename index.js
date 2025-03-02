@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
-// Инициализация Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBc8tx0kFGYYtCwmEEBBqW_UoJjosC3L0U",
   authDomain: "to-do-list-16499.firebaseapp.com",
@@ -16,23 +15,22 @@ const auth = getAuth(app);
 auth.languageCode = 'en';
 const provider = new GoogleAuthProvider();
 
+
 const googleLogin = document.getElementById('google-btn');
 if (googleLogin) {
   googleLogin.addEventListener('click', () => {
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider)
+    .then(() => window.location.href = 'index2.html')
+    .catch((error) => {
+      if (error.code === 'auth/popup-closed-by-user') {
+        console.error('Пользователь закрыл окно аутентификации');
+      } else {
+        console.error(error.message);
+      }
+    });
+  
   });
 }
-
-getRedirectResult(auth)
-  .then((result) => {
-    if (result) {
-      window.location.href = 'index2.html';
-    }
-  })
-  .catch((error) => {
-    console.error('Ошибка аутентификации: ', error.message);
-  });
-
 
 const updateUserProfile = (user) => {
   if (document.getElementById('userName')) {
