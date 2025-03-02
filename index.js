@@ -20,8 +20,15 @@ const googleLogin = document.getElementById('google-btn');
 if (googleLogin) {
   googleLogin.addEventListener('click', () => {
     signInWithPopup(auth, provider)
-      .then(() => window.location.href = 'index2.html')
-      .catch((error) => console.error(error.message));
+    .then(() => window.location.href = 'index2.html')
+    .catch((error) => {
+      if (error.code === 'auth/popup-closed-by-user') {
+        console.error('Пользователь закрыл окно аутентификации');
+      } else {
+        console.error(error.message);
+      }
+    });
+  
   });
 }
 
