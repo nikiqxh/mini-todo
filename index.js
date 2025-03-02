@@ -86,8 +86,13 @@ const createTaskElement = (task) => {
   return li;
 };
 
+todoTitle.textContent = 'Inbox'
 
-todoTitle.textContent = listCurrentName;
+if (todoTitle) {
+  todoTitle.textContent = listCurrentName;
+} else {
+  console.error('Элемент todoTitle не найден!');
+}
 
 asideBtns.forEach(btn => {
   btn.addEventListener('click', function () {
